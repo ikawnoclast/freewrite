@@ -1,0 +1,53 @@
+#!/bin/bash
+
+#
+# freewrite -- A script to simple the freewriting process.
+#
+
+umask 022
+
+# USER CONFIGURAGLE OPTIONS
+dropbox_dir="$HOME/Dropbox"
+fw_store="$dropbox_dir/Writing/Freewriting"
+fw_file_path="$fw_store/`date '+%Y/%m/%d.txt'`"
+txt_date=`date '+%A, %B %d, %Y \(week %V\) %H:%M'`
+template_file="$fw_store/template.txt"
+fw_editor="/usr/local/bin/emacs"
+fw_editor_opts=""
+time=$(( 30 * 60 )) # time in seconds
+
+# ADVANCED CONFIGURATION OPTIONS
+fw_file_path="$fw_store/`date '+%Y/%m/%d.txt'`"
+txt_date=`date '+%A, %B %d, %Y \(week %V\) %H:%M'`
+
+# check and create directories and destination file
+fw_base_dir=`dirname $fw_file_path`
+if [ ! -d $dropbox_dir ]; then
+	echo "$0: Dropbox directory \"$dropbox_dir\" is missing. Exiting!"
+	exit 1
+fi
+if [ -f $fw_file_path ]; then
+	echo "$0: Free writing file \"$fw_file_path\" exists. Exiting!"
+	exit 1
+fi
+[ ! -d $fw_base_dir ] && mkdir -p $fw_base_dir
+sed -e "s/%%DATE_FIELD%%/$txt_date/" < $template_file > $fw_file_path
+jump_to=`wc -l $fw_file_path | sed -e 's/^[ \t]*//'`
+
+# start a timer
+( sleep $time && say "Free writing session has ended" ) &
+
+# open an editor with a template and dated filename
+$fw_editor +$jump_to $fw_editor_opts $fw_file_path
+
+# add a completion timestamp to the end of the file
+date_completed=`date '+%H:%M'`
+cat <<__EOT__ >> $fw_file_path
+
+---------------------------------------------------------------------------
+Completed at: $date_completed
+__EOT__
+
+# exit with encouraging words?
+echo "Thanks for another awesome free writing session!"
+exit 0
