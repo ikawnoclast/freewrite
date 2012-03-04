@@ -32,13 +32,23 @@ if [ -f $fw_file_path ]; then
 fi
 [ ! -d $fw_base_dir ] && mkdir -p $fw_base_dir
 sed -e "s/%%DATE_FIELD%%/$txt_date/" < $template_file > $fw_file_path
-jump_to=`wc -l $fw_file_path | sed -e 's/^[ \t]*//'`
 
-# start a timer
+# calculate the lines in the file to jump the editor to the end to start
+jump_to=`wc -l $fw_file_path | awk '{print $1}'`
+
+# calculate the template word count for later use in determining total
+#  word count
+template_word_count=`wc -w $fw_file_path | awk '{print $1}'`
+
+# start a timer in subshell to run independently of the editor
 ( sleep $time && say "Free writing session has ended" ) &
 
 # open an editor with a template and dated filename
 $fw_editor +$jump_to $fw_editor_opts $fw_file_path
+
+# calculate a final word count
+fw_file_word_count=`wc -w $fw_file_path | awk '{print $1}'`
+final_word_count=$(( fw_file_word_count - template_word_count ))
 
 # add a completion timestamp to the end of the file
 date_completed=`date '+%H:%M'`
@@ -49,5 +59,7 @@ Completed at: $date_completed
 __EOT__
 
 # exit with encouraging words?
+echo "You wrote $final_word_count words."
 echo "Thanks for another awesome free writing session!"
+
 exit 0
