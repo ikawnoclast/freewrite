@@ -46,6 +46,16 @@ template_word_count=`wc -w $fw_file_path | awk '{print $1}'`
 # open an editor with a template and dated filename
 $fw_editor +$jump_to $fw_editor_opts $fw_file_path
 
+# grep for todo entries for extraction
+todo_list=`mktemp /tmp/todos.XXXXXXXX`
+grep "^TODO:" $fw_file_path > $todo_list
+if [ -s $todo_list ]; then
+	echo "The following to-dos were extracted from the text:"
+	cat $todo_list
+	echo
+	rm -f $todo_list
+fi
+
 # calculate a final word count
 fw_file_word_count=`wc -w $fw_file_path | awk '{print $1}'`
 final_word_count=$(( fw_file_word_count - template_word_count ))
