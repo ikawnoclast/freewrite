@@ -112,7 +112,7 @@ Go to my [profile page](http://ikawnoclast.com) for contact details.
 
 ## License ##
 
-Copyright (c) 2012 Keith A. Watson <ikawnoclast@gmail.com>
+Copyright (c) 2012 Keith A. Watson
 
 MIT License
 
