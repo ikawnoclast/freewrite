@@ -1,0 +1,24 @@
+#
+# after_find_todos
+#
+#	A freewrite after function to find "to-do" items embedded in the
+#	freewrite session text and print them to stdout.
+#
+# Keith A. Watson <ikawnoclast@gmail.com>
+#
+
+after_find_todos () {
+	local todo_list=$(mktemp /tmp/todos.XXXXXXXX)
+	local todo_count=0
+	grep "^TODO:" $session_file > $todo_list
+	if [ -s $todo_list ]; then
+		echo "The following to-dos were extracted from the text:"
+		cat $todo_list
+	fi
+	if [ -s $todo_list ]; then
+		todo_count=$(wc -l $todo_list | awk '{print $1}')
+		echo "todo_count: $todo_count" >> $data_file
+		cat $todo_list >> $data_file
+	fi
+	rm -f $todo_list
+}

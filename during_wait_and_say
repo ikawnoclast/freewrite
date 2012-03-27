@@ -1,0 +1,13 @@
+#
+# during_wait_and_say
+#
+#	A freewrite during function to start a sub-shell, set a timer, and 
+#	say something. The sub-shell has to run in the background to allow 
+#	continuation of execution while the timer counts.
+#
+# Keith A. Watson <ikawnoclast@gmail.com>
+#
+
+during_wait_and_say () {
+	( sleep $time && say "Free writing session has ended" ) &
+}

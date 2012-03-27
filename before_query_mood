@@ -1,0 +1,17 @@
+#
+# before_query_mood
+#	
+#	A freewrite before function to query the writer about
+#	her mood before entering the edit session. The purpose is to ask the
+#	writer to describe their initial emotional state to see if that affects
+#	or "colors" the text.
+#
+# Keith A. Watson <ikawnoclast@gmail.com>
+#
+
+before_query_mood () {
+	local answer
+	echo -n "What is your current mood? "
+	read answer
+	echo "mood: $answer" >> $data_file
+}

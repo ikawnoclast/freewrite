@@ -1,0 +1,13 @@
+#
+# after_print_final_message 
+#
+#	A freewrite after function to print an encouraging message at the
+#	conclusion of the freewrite sessions.
+#
+# Keith A. Watson <ikawnoclast@gmail.com>
+#
+
+after_print_final_message () {
+	echo "Thanks for another awesome free writing session!"
+}
+

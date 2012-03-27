@@ -1,0 +1,18 @@
+#
+# after_append_timestamp
+#
+#	A freewrite after function to add add a completion timestamp to the 
+#	end of the freewrite session file.
+#
+# Keith A. Watson <ikawnoclast@gmail.com>
+#
+
+after_append_timestamp () {
+	local time_completed=$(date '+%H:%M')
+	cat <<-__EOT__ >> $session_file
+
+	---------------------------------------------------------------------------
+	Completed at: $time_completed
+	__EOT__
+	echo "session_end: $time_completed" >> $data_file
+}

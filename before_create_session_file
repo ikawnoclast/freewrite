@@ -1,0 +1,13 @@
+#
+# before_create_session_file
+#
+#	A freewrite before function to create the initial free write session
+#	file from a template. 
+#
+# Keith A. Watson <ikawnoclast@gmail.com>
+#
+
+before_create_session_file () {
+	sed -e "s/%%DATE_FIELD%%/$txt_date/" < $template_file > $session_file
+	echo "session_start: $txt_date" >> $data_file
+}
