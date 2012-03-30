@@ -9,9 +9,10 @@ PROJECTNAME=	freewrite
 MAINSCRIPT=	freewrite
 AUXFILES=	README.md freewriterc.sample
 FUNCTIONS=	after_append_timestamp		\
+		after_collect_stats		\
 		after_find_todos 		\
 		after_print_final_message	\
-		after_print_word_count		\
+		after_print_stats		\
 		before_check_directories	\
 		before_check_if_file_exists	\
 		before_create_session_file	\

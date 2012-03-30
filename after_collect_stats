@@ -1,0 +1,27 @@
+#
+# after_collect_stats
+#
+#	A freewrite after function to gather statistics from the free write
+#	session file for storage and analysis.
+#
+
+after_collect_stats () {
+	local word_count=$(sed '1,/^-*/d' < $session_file | wc -w | \
+			   awk '{print $1}')
+	local pace_position=0
+	local pace_status=""
+	echo "word_count: $word_count" >> $data_file
+	echo "$(date +%d), $word_count" >> $stats_file
+	echo "pace: $writing_pace" >> $data_file
+	
+	# determine pace position (on, under, over)
+	pace_position=$(( writing_pace - word_count ))
+	if [ $pace_position -eq 0 ]; then
+		pace_status="keeping pace"
+	elif [ $pace_position -gt 0 ]; then
+		pace_status="under pace by $pace_position words"
+	else
+		pace_status="over pace by $(( -pace_position )) words"
+	fi
+	echo "pace_status: $pace_status" >> $data_file
+}

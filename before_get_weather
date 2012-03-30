@@ -16,13 +16,10 @@ before_get_weather () {
 	if [ ! -z $weather ]; then
 		# extract weather in <title>.*</title>
 		weather_report=$(cat $weather | grep '</title>' | tail -1 | \
-				 sed -e 's/^\(.*\) at Lafayette.*/\1/')
+				 sed -e 's/^\(.*\) at .*/\1/')
 	else
 		weather_report="No data available."
 	fi
-	cat <<-__EOT__ >> $data_file
-
-	Weather: $weather_report
-	__EOT__
+	echo "weather: $weather_report" >> $data_file
 	rm -f $weather
 }

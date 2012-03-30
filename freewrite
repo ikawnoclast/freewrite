@@ -15,6 +15,7 @@ txt_date=$(date '+%A, %B %d, %Y \(week %V\) %H:%M')
 template_file="$fw_store/template.txt"
 fw_editor="/usr/local/bin/emacs"
 fw_editor_opts=""
+writing_pace="1100" 	# set a static pace 
 
 time=$(( 30 * 60 )) # time in seconds
 
@@ -22,10 +23,11 @@ time=$(( 30 * 60 )) # time in seconds
 file_prefix=$(date '+%Y/%m/%d')
 session_file="$fw_store/$file_prefix.txt"
 data_file="$fw_store/$file_prefix-data.txt"
+stats_file="$fw_store/$(date '+%Y/%m')/stats.csv"
 txt_date=$(date '+%A, %B %d, %Y \(week %V\) %H:%M')
 before_function_list="before_check_directories before_check_if_file_exists before_create_session_file before_query_mood before_get_weather"
 during_function_list="during_wait_and_say"
-after_function_list="after_print_word_count after_append_timestamp after_find_todos after_print_final_message"
+after_function_list="after_collect_stats after_print_stats after_append_timestamp after_find_todos after_print_final_message"
 
 # determine script storage directory
 _source="${BASH_SOURCE[0]}"
@@ -84,7 +86,7 @@ _load_external_functions () {
 
 _terminate_bg_jobs () {
 	for job in $(jobs -p); do 
-		kill $job; 
+		kill $job 2> /dev/null
 	done
 }
 
