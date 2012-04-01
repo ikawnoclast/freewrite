@@ -20,6 +20,9 @@ FUNCTIONS=	after_append_timestamp		\
 		before_query_mood		\
 		during_wait_and_say
 
+CONFIGFILE=	freewriterc.sample
+CONFIGLOCATION=	$(HOME)/.freewriterc
+
 ALLFILES=	$(MAINSCRIPT) $(FUNCTIONS) $(AUXFILES)
 
 # Where should the files go? (select one)
@@ -36,8 +39,10 @@ install: check
 	rm -rf $(INSTALLDIR).old
 	rm -f $(BINDIR)/$(MAINSCRIPT)
 	-mv $(INSTALLDIR) $(INSTALLDIR).old
+	-mv $(CONFIGLOCATION) $(CONFIGLOCATION).old
 	mkdir $(INSTALLDIR)
 	cp $(ALLFILES) $(INSTALLDIR)
+	cp $(CONFIGFILE) $(CONFIGLOCATION)
 	cd $(BINDIR) && ln -s $(INSTALLDIR)/$(MAINSCRIPT)
 	
 uninstall:

@@ -8,33 +8,21 @@
 
 umask 022
 
-# USER CONFIGURAGLE OPTIONS
-dropbox_dir="$HOME/Dropbox"
-fw_store="$dropbox_dir/Writing/Freewriting"
-txt_date=$(date '+%A, %B %d, %Y \(week %V\) %H:%M')
-template_file="$fw_store/template.txt"
-fw_editor="/usr/local/bin/emacs"
-fw_editor_opts=""
-writing_pace="1100" 	# set a static pace 
-
-time=$(( 30 * 60 )) # time in seconds
-
-# ADVANCED CONFIGURATION OPTIONS
-file_prefix=$(date '+%Y/%m/%d')
-session_file="$fw_store/$file_prefix.txt"
-data_file="$fw_store/$file_prefix-data.txt"
-stats_file="$fw_store/$(date '+%Y/%m')/stats.csv"
-txt_date=$(date '+%A, %B %d, %Y \(week %V\) %H:%M')
-before_function_list="before_check_directories before_check_if_file_exists before_create_session_file before_query_mood before_get_weather"
-during_function_list="during_wait_and_say"
-after_function_list="after_collect_stats after_print_stats after_append_timestamp after_find_todos after_print_final_message"
+# load user configuration file
+config_file="$HOME/.freewriterc"
+if [ -r $config_file ]; then
+	source $config_file
+else
+	echo "$0: $config_file does not exist. Exiting"
+	exit 1
+fi
 
 # determine script storage directory
 _source="${BASH_SOURCE[0]}"
 while [ -h "$_source" ] ; do _source="$(readlink "$_source")"; done
 _script_dir="$( cd -P "$( dirname "$_source" )" && pwd )"
 
-# parse command line arguments
+# parse command line arguments and set modes of operation
 _safe_mode="no"
 _debug_mode="no"
 while getopts ":hs" opt; do
@@ -93,11 +81,15 @@ _terminate_bg_jobs () {
 # kill any background jobs exiting on various signals
 trap "_terminate_bg_jobs" EXIT QUIT HUP INT
 
+# load all external functions from their respective files
 _load_external_functions
+
+# execute the functions for operations to be conducted before and during the
+#  free write session
 _execute_function_list "$before_function_list"
 _execute_function_list "$during_function_list"
 
-# calculate the lines in the file to jump the editor to the end to start
+# find the lines in the session file to put the user in the "right" spot to edit
 jump_to=$(wc -l $session_file | awk '{print $1}')
 
 # open an editor with a template and dated filename
