@@ -5,14 +5,11 @@
 #	to provide weather-related context to the freewrite session file.
 #
 
-# weather data from the closest airport weather observation station
-# KAW: move into .freewriterc
-weather_url="http://www.weather.gov/xml/current_obs/KLAF.rss"
-
 before_get_weather () {
 	local weather=$(mktemp /tmp/todos.XXXXXXXX)
 	local weather_report
-	curl --silent $weather_url > $weather
+	
+	curl --silent $before_get_weather_url > $weather
 	if [ ! -z $weather ]; then
 		# extract weather in <title>.*</title>
 		weather_report=$(cat $weather | grep '</title>' | tail -1 | \

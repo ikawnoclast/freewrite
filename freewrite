@@ -46,8 +46,6 @@ while getopts ":hs" opt; do
   	esac
 done
 
-echo -e "debug_mode: $_debug_mode\nsafe_mode: $_safe_mode" >> $data_file
-
 _execute_function_list () {
 	[ $_safe_mode == "yes" ] && return
 	local ext_function_list="$1"
@@ -89,11 +87,14 @@ _load_external_functions
 _execute_function_list "$before_function_list"
 _execute_function_list "$during_function_list"
 
+# save the state of specific options into the data file
+echo -e "debug_mode: $_debug_mode\nsafe_mode: $_safe_mode" >> $data_file
+
 # find the lines in the session file to put the user in the "right" spot to edit
 jump_to=$(wc -l $session_file | awk '{print $1}')
 
 # open an editor with a template and dated filename
-$fw_editor +$jump_to $fw_editor_opts $session_file
+$editor +$jump_to $editor_opts $session_file
 
 # run functions after the free write session
 _execute_function_list "$after_function_list"

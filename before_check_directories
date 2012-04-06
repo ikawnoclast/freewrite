@@ -1,20 +1,21 @@
 # 
 # before_check_directories
 #
-#	A freewrite _before function to check for the existence of specific 
+#	A freewrite before function to check for the existence of specific 
 #	directories to store the free write session files. 
 #
 
 before_check_directories () {
-	local fw_base_dir=$(dirname $session_file)
+	local base_dir=$(dirname $session_file)
 	local status=0
-	if [ ! -d $dropbox_dir ]; then
-		echo "$0: Dropbox directory \"$dropbox_dir\" is missing. Exiting!"
+	
+	if [ ! -d $top_level_dir ]; then
+		echo "$0: The free write directory \"$top_level_dir\" is missing."
 		status=1
 	fi
 	
-	if [ $status -eq 0 -a ! -d $fw_base_dir ]; then
-		mkdir -p $fw_base_dir
+	if [ $status -eq 0 -a ! -d $base_dir ]; then
+		mkdir -p $base_dir
 	fi
 	return $status
 }

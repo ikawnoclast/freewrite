@@ -1,7 +1,7 @@
 # 
 # before_check_if_file_exists
 #
-#	A freewrite _before function to check for the existence of the free 
+#	A freewrite before function to check for the existence of the free 
 #	write session file. If it does exist, this may be a repeat session 
 #	or an error. For now, we assume it's an error and return an error 
 #	condition.
@@ -9,9 +9,11 @@
 
 before_check_if_file_exists () {
 	local status=0
+	
 	if [ -f $session_file ]; then
 		echo "$0: Free writing file \"$session_file\" exists."
 		status=1
 	fi
+	
 	return $status
 }
