@@ -6,9 +6,6 @@
 #
 
 after_print_stats () {
-	local word_count=$(grep "word_count:" $data_file | sed 's/.*: //')
-	local pace=$(grep "pace:" $data_file | sed 's/.*: //')
-	local pace_status=$(grep "pace_status:" $data_file | sed 's/.*: //')
-	echo "You wrote $word_count words. Your defined pace is $pace words."
-	echo "This session is $pace_status."
+	echo "You wrote ${session_data["word_count"]} words. Your defined pace is $writing_pace words."
+	echo "This session is ${session_data["pace_status"]}."
 }

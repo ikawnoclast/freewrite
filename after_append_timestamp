@@ -6,11 +6,10 @@
 #
 
 after_append_timestamp () {
-	local time_completed=$(date '+%H:%M')
+	session_data["session_end"]=$(date '+%H:%M:%S')
 	cat <<-__EOT__ >> $session_file
 
 	---------------------------------------------------------------------------
-	Completed at: $time_completed
+	Completed at: ${session_data["session_end"]}
 	__EOT__
-	echo "session_end: $time_completed" >> $data_file
 }

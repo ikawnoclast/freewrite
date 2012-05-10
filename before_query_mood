@@ -8,8 +8,11 @@
 #
 
 before_query_mood () {
-	local answer
-	echo -n "What is your current mood? "
-	read answer
-	echo "mood: $answer" >> $data_file
+
+	echo -e "Welcome to freewrite, the simple tool for free writing!\n"
+	echo -e "\tRate your current mood on a scale from 0 to 9." 
+	echo -e "\t(Bad) 0 <---------- 5 ----------> 9 (Good)\n"
+	echo -n "What is your current mood (0-9)? "
+
+	read -n 1 session_data["mood"]
 }

@@ -21,8 +21,8 @@ editor="/usr/local/bin/emacs"
 # editor_opts - options to pass to the editor
 editor_opts=""
 
-# time - time in seconds of the length of the free write session
-time=$(( 30 * 60 )) # time in seconds
+# writing_time - time in minutes of the length of the free write session
+writing_time=30 # time in minutes
 
 # writing_pace - the user defined "pace" in terms of number of words per free
 #	write session
@@ -30,11 +30,13 @@ writing_pace="1100"
 
 # EXTERNAL FUNCTION VARIABLES
 
-# before_get_weather_rss - weather data RSS feed from the closest airport 
+# before_get_weather_url - weather data RSS feed from the closest airport 
 #  weather observation station
 #  See http://www.weather.gov/xml/current_obs/ for your local observation
 before_get_weather_url="http://www.weather.gov/xml/current_obs/KLAF.rss"
 
+# after_tweet_results - tweets the word count and pace status
+after_tweet_results_twitter_cmd="t update"
 
 # ADVANCED CONFIGURATION OPTIONS
 
@@ -68,4 +70,5 @@ after_function_list="after_collect_stats		\
 		     after_print_stats			\
 		     after_append_timestamp		\
 		     after_find_todos			\
+		     after_tweet_results		\
 		     after_print_final_message"

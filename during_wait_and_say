@@ -7,5 +7,6 @@
 #
 
 during_wait_and_say () {
-	( sleep $time && say "Free writing session has ended" ) &
+	local sleep_time=$(( $writing_time * 60 ))
+	( sleep $sleep_time && say "Free writing session has ended" ) &
 }

@@ -6,22 +6,20 @@
 #
 
 after_collect_stats () {
-	local word_count=$(sed '1,/^-*/d' < $session_file | wc -w | \
-			   awk '{print $1}')
-	local pace_position=0
-	local pace_status=""
-	echo "word_count: $word_count" >> $data_file
+	session_data["word_count"]=$(sed '1,/^-*/d' < $session_file | wc -w | \
+				 awk '{print $1}')
+	session_data["pace_position"]=0
+	session_data["pace_status"]=""
+
 	echo "$(date +%d), $word_count" >> $stats_file
-	echo "pace: $writing_pace" >> $data_file
 	
 	# determine pace position (on, under, over)
-	pace_position=$(( writing_pace - word_count ))
-	if [ $pace_position -eq 0 ]; then
-		pace_status="keeping pace"
-	elif [ $pace_position -gt 0 ]; then
-		pace_status="under pace by $pace_position words"
+	session_data["pace_position"]=$(( writing_pace - ${session_data["word_count"]} ))
+	if [ ${session_data["pace_position"]} -eq 0 ]; then
+		session_data["pace_status"]="keeping pace"
+	elif [ ${session_data["pace_position"]} -gt 0 ]; then
+		session_data["pace_status"]="${session_data["pace_position"]} words under pace"
 	else
-		pace_status="over pace by $(( -pace_position )) words"
+		session_data["pace_status"]="$(( -${session_data["pace_position"]} )) words over pace"
 	fi
-	echo "pace_status: $pace_status" >> $data_file
 }

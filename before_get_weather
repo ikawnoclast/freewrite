@@ -17,6 +17,6 @@ before_get_weather () {
 	else
 		weather_report="No data available."
 	fi
-	echo "weather: $weather_report" >> $data_file
+	session_data["weather"]=$weather_report
 	rm -f $weather
 }

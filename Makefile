@@ -13,6 +13,7 @@ FUNCTIONS=	after_append_timestamp		\
 		after_find_todos 		\
 		after_print_final_message	\
 		after_print_stats		\
+		after_tweet_results		\
 		before_check_directories	\
 		before_check_if_file_exists	\
 		before_create_session_file	\

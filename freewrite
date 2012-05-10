@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/local/bin/bash
 
 #
 # freewrite
@@ -7,6 +7,9 @@
 #
 
 umask 022
+
+# declare an associative array in which to store session_data
+declare -A session_data
 
 # load user configuration file
 config_file="$HOME/.freewriterc"
@@ -94,9 +97,14 @@ echo -e "debug_mode: $_debug_mode\nsafe_mode: $_safe_mode" >> $data_file
 jump_to=$(wc -l $session_file | awk '{print $1}')
 
 # open an editor with a template and dated filename
-$editor +$jump_to $editor_opts $session_file
+/usr/bin/time $editor +$jump_to $editor_opts $session_file
 
 # run functions after the free write session
 _execute_function_list "$after_function_list"
+
+# dump the collected session_data to the data file
+for index in ${!session_data[@]}; do
+	echo "$index: ${session_data[$index]}" >> $data_file
+done
 
 exit 0
