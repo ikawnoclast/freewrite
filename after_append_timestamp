@@ -7,7 +7,7 @@
 
 after_append_timestamp () {
 	session_data["session_end"]=$(date '+%H:%M:%S')
-	cat <<-__EOT__ >> $session_file
+	cat <<-__EOT__ >> "$session_file"
 
 	---------------------------------------------------------------------------
 	Completed at: ${session_data["session_end"]}

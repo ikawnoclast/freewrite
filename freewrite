@@ -14,9 +14,9 @@ declare -A session_data
 # load user configuration file
 config_file="$HOME/.freewriterc"
 if [ -r $config_file ]; then
-	source $config_file
+	source "$config_file"
 else
-	echo "$0: $config_file does not exist. Exiting"
+	echo "$0: \"$config_file\" does not exist. Exiting"
 	exit 1
 fi
 
@@ -68,7 +68,7 @@ _load_external_functions () {
 	
 	for function_type in $function_types; do
 		for ext_function_file in $_script_dir/${function_type}_* ; do
-			[ -r $ext_function_file ] && source $ext_function_file
+			[ -r "$ext_function_file" ] && source "$ext_function_file"
 		done
 	done
 }
@@ -91,20 +91,20 @@ _execute_function_list "$before_function_list"
 _execute_function_list "$during_function_list"
 
 # save the state of specific options into the data file
-echo -e "debug_mode: $_debug_mode\nsafe_mode: $_safe_mode" >> $data_file
+echo -e "debug_mode: $_debug_mode\nsafe_mode: $_safe_mode" >> "$data_file"
 
 # find the lines in the session file to put the user in the "right" spot to edit
-jump_to=$(wc -l $session_file | awk '{print $1}')
+jump_to=$(wc -l "$session_file" | awk '{print $1}')
 
 # open an editor with a template and dated filename
-/usr/bin/time $editor +$jump_to $editor_opts $session_file
+/usr/bin/time $editor +$jump_to $editor_opts "$session_file"
 
 # run functions after the free write session
 _execute_function_list "$after_function_list"
 
 # dump the collected session_data to the data file
 for index in ${!session_data[@]}; do
-	echo "$index: ${session_data[$index]}" >> $data_file
+	echo "$index: ${session_data[$index]}" >> "$data_file"
 done
 
 exit 0

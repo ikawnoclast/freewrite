@@ -10,7 +10,7 @@ before_get_weather () {
 	local weather_report
 	
 	curl --silent $before_get_weather_url > $weather
-	if [ ! -z $weather ]; then
+	if [[ ! -z $weather ]]; then
 		# extract weather in <title>.*</title>
 		weather_report=$(cat $weather | grep '</title>' | tail -1 | \
 				 sed -e 's/^\(.*\) at .*/\1/')

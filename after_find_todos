@@ -8,7 +8,7 @@
 after_find_todos () {
 	local todo_list=$(mktemp /tmp/todos.XXXXXXXX)
 
-	grep "^TODO:" $session_file > $todo_list
+	grep "^TODO:" "$session_file" > $todo_list
 	if [ -s $todo_list ]; then
 		echo "The following to-dos were extracted from the text:"
 		cat $todo_list

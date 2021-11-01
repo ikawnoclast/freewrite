@@ -6,12 +6,12 @@
 #
 
 after_collect_stats () {
-	session_data["word_count"]=$(sed '1,/^-*/d' < $session_file | wc -w | \
+	session_data["word_count"]=$(sed '1,/^-*/d' < "$session_file" | wc -w | \
 				 awk '{print $1}')
 	session_data["pace_position"]=0
 	session_data["pace_status"]=""
 
-	echo "$(date +%d), $word_count" >> $stats_file
+	echo "$(date +%d), $word_count" >> "$stats_file"
 	
 	# determine pace position (on, under, over)
 	session_data["pace_position"]=$(( writing_pace - ${session_data["word_count"]} ))

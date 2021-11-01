@@ -8,16 +8,19 @@
 after_tweet_results () {
 	local todo_message
 
-	if [[ ${session_data["todo_count"]} ]]; then
-		if [[ ${session_data["todo_count"]} -eq 1 ]]; then
-			todo_message="Gathered 1 to-do item."
-		else
-			todo_message="Gathered ${session_data["todo_count"]} to-do items."
+	if [[ "$after_tweet_results_twitter_cmd" ]]; then
+
+		if [[ ${session_data["todo_count"]} ]]; then
+			if [[ ${session_data["todo_count"]} -eq 1 ]]; then
+				todo_message="Gathered 1 to-do item."
+			else
+				todo_message="Gathered ${session_data["todo_count"]} to-do items."
+			fi
 		fi
+
+		local tweet="Wrote ${session_data["word_count"]} words during $writing_time minute free writing session (${session_data["pace_status"]}). $todo_message #freewrite #dailywords"
+		echo "Tweeting the following message: $tweet"
+
+		( $after_tweet_results_twitter_cmd "$tweet" )
 	fi
-
-	local tweet="Wrote ${session_data["word_count"]} words during $writing_time minute free writing session (${session_data["pace_status"]}). $todo_message #freewrite #dailywords"
-	echo "Tweeting the following message: $tweet"
-
-	( $after_tweet_results_twitter_cmd "$tweet" )
 }

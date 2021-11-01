@@ -40,11 +40,12 @@ install: check
 	rm -rf $(INSTALLDIR).old
 	rm -f $(BINDIR)/$(MAINSCRIPT)
 	-mv $(INSTALLDIR) $(INSTALLDIR).old
-	-mv $(CONFIGLOCATION) $(CONFIGLOCATION).old
 	mkdir $(INSTALLDIR)
 	cp $(ALLFILES) $(INSTALLDIR)
-	cp $(CONFIGFILE) $(CONFIGLOCATION)
 	cd $(BINDIR) && ln -s $(INSTALLDIR)/$(MAINSCRIPT)
+	cp $(CONFIGFILE) $(CONFIGLOCATION)-new
+	echo "Here are the differences in the repo version of the $(MAINSCRIPT) config file and yours:"
+	-diff $(CONFIGLOCATION) $(CONFIGLOCATION)-new
 	
 uninstall:
 	rm -rf $(INSTALLDIR) $(INSTALLDIR).old
