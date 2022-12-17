@@ -8,7 +8,7 @@
 
 umask 022
 
-# declare an associative array in which to store session_data
+# create an associative array in which to store session_data
 declare -A session_data
 
 # load user configuration file
@@ -28,10 +28,10 @@ _script_dir="$( cd -P "$( dirname "$_source" )" && pwd )"
 # parse command line arguments and set modes of operation
 _safe_mode="no"
 _debug_mode="no"
-while getopts ":hs" opt; do
+while getopts ":hsd" opt; do
 	case $opt in
 		h)
-		echo "$0 [-h] [-s]" >&2
+		echo "$0 [-h] [-s] [-d]" >&2
 		echo -e "\t-h\tThis help message." >&2
 		echo -e "\t-s\tSafe mode. Does not use any functions." >&2
 		echo -e "\t-d\tDebug mode. Provides additional output." >&2

@@ -41,30 +41,34 @@ for your input as well. If it's useful to you, please let me know.
 
 This is the basic requirement:
 
-* Bash shell (tested with 3.2 [Mac OS X default] and 4.2 [from
+* GNU Bash shell (tested with 3.2.X [Mac OS X default] and 5.2.X [from
   Homebrew/Fink/MacPorts])
 
 freewrite uses external functions to implement whatever your heart's desire may
-be. You can use other utilities how ever you would like. That said, the included
+be. You can use other utilities however you would like. That said, the included
 functions use the following optional utilities:
 
-* `say(1)` [Mac OS X], a command-line tool that uses the Speech Synthesis
-  manager to convert a string into audible speech. The `during_wait_and_say`
-  function uses it.
+* `say(1)` [Mac OS X] or `speak-ng(1)` [Linux], command-line tools that 
+  convert a string into audible speech. The `during_wait_and_say`
+  function uses that capability.
 
-* [Dropbox](http://dropbox.com/), a cloud-based storage service used to store
-  free write session files. freewrite can use a Dropbox directory to archive the
-  free write session files. You can specify any directory you want though.
+* [Dropbox](http://dropbox.com/) or [Google Drive](http://drive.google.com/), 
+  cloud-based storage services used to store free write session files. 
+  freewrite can use a cloud storage directory to archive the free write session
+  files. **You can specify any directory you want though.**
 
 ## Installation ##
 
 The freewrite tool includes a Makefile to install and uninstall the files
 associated with freewrite. Just type "make install" from the freewrite
-directory to install.
+directory to install. By default, it uses the ~/Library/Freewrite and ~/bin
+folder on macOS to install the scripts. Edit the Makefile for your needs.
 
-KAW: Adjust this text when the .freewriterc infrastructure works.
+The configuration file (located at ~/.freewriterc) is not overwritten but a 
+diff(1) of the file and the example/sample configuration file (~/.freewriterc-new) 
+are shown for manual updating, if needed.
 
-Edit the script to adjust variables that apply to you.
+Edit the ~/.freewriterc file to adjust variables that apply to you.
 
 ## freewrite included functions ##
 
@@ -106,13 +110,14 @@ provided:
 
 ## Bugs, Feature Requests, Questions ##
 
-File a bug on the github project, please. 
+File any issues or todos on the project's
+[issue tracker](https://github.com/ikawnoclast/freewrite/issues), please. 
 
 Go to my [profile page](http://ikawnoclast.com) for contact details.
 
 ## License ##
 
-Copyright (c) 2012 Keith A. Watson
+Copyright (c) 2012-2022 Keith A. Watson
 
 MIT License
 

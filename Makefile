@@ -1,7 +1,7 @@
 #
 # Makefile for the freewrite project.
 #
-# Copyright (c) 2012 Keith A. Watson
+# Copyright (c) 2012-2022 Keith A. Watson
 #
 
 PROJECTNAME=	freewrite

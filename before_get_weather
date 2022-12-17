@@ -6,17 +6,19 @@
 #
 
 before_get_weather () {
-	local weather=$(mktemp /tmp/todos.XXXXXXXX)
+	local weather_data=$(mktemp /tmp/weather.XXXXXXXX)
 	local weather_report
 	
-	curl --silent $before_get_weather_url > $weather
-	if [[ ! -z $weather ]]; then
+	$https_tool $https_tool_options $before_get_weather_url > $weather_data
+	if [[ -s $weather_data ]]; then
 		# extract weather in <title>.*</title>
-		weather_report=$(cat $weather | grep '</title>' | tail -1 | \
+		weather_report=$(cat $weather_data | grep '</title>' | tail -1 | \
 				 sed -e 's/^\(.*\) at .*/\1/')
+		[[ $_debug_mode == "yes" ]] && echo "DEBUG -- Weather report: $weather_report"
 	else
 		weather_report="No data available."
 	fi
 	session_data["weather"]=$weather_report
-	rm -f $weather
+	[[ $_debug_mode == "yes" ]] && echo "DEBUG -- Weather data captured: " ${session_data["weather"]}
+	rm -f $weather_data
 }

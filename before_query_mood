@@ -15,4 +15,5 @@ before_query_mood () {
 	echo -n "What is your current mood (0-9)? "
 
 	read -n 1 session_data["mood"]
+	echo
 }
