@@ -7,7 +7,7 @@
 # USER CONFIGURAGLE OPTIONS
 
 # top_level_dir - directory where free write session and data files are stored
-top_level_dir="$HOME/Google Drive/Writing/Freewriting"
+top_level_dir="$HOME/Google Drive/My Drive/Writing/Freewriting"
 
 # writing_time - time in minutes of the length of the free write session
 writing_time=10
