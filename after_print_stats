@@ -6,6 +6,6 @@
 #
 
 after_print_stats () {
-	echo "You wrote ${session_data["word_count"]} words. Your defined pace is $writing_pace words."
+	echo "You wrote ${session_data["word_count"]} words in ${session_data["writing_time"]}. Your defined pace is $writing_pace words in $writing_time minutes."
 	echo "This session is ${session_data["pace_status"]}."
 }

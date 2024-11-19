@@ -1,7 +1,7 @@
 #
 # Makefile for the freewrite project.
 #
-# Copyright (c) 2012-2022 Keith A. Watson
+# Copyright (c) 2012-2024 Keith A. Watson
 #
 
 PROJECTNAME=	freewrite
@@ -28,10 +28,11 @@ ALLFILES=	$(MAINSCRIPT) $(FUNCTIONS) $(AUXFILES)
 
 # Where should the files go? (select one)
 # Typical Mac OS X install location for a single user
-INSTALLDIR=$(HOME)/Library/$(PROJECTNAME)
+#INSTALLDIR=$(HOME)/Library/$(PROJECTNAME)
 
-# Typical UNIX install location for a single user
-#INSTALLDIR=$(HOME)/lib/$(PROJECTNAME)
+# Typical UNIX install locations for a single user
+#INSTALLDIR=$(HOME)/.$(PROJECTNAME)
+INSTALLDIR=$(HOME)/lib/$(PROJECTNAME)
 
 # Typical path for installation of main script
 BINDIR=$(HOME)/bin
@@ -44,7 +45,7 @@ install: check
 	cp $(ALLFILES) $(INSTALLDIR)
 	cd $(BINDIR) && ln -s $(INSTALLDIR)/$(MAINSCRIPT)
 	cp $(CONFIGFILE) $(CONFIGLOCATION)-new
-	echo "Here are the differences in the repo version of the $(MAINSCRIPT) config file and yours:"
+	echo "Here are the differences in the repo version of the $(MAINSCRIPT) config file and your current config file:"
 	-diff $(CONFIGLOCATION) $(CONFIGLOCATION)-new
 	
 uninstall:

@@ -6,6 +6,7 @@
 #
 
 after_collect_stats () {
+	session_data["session_end"]=$(date +%H:%M:%S)
 	session_data["word_count"]=$(sed '1,/^-*/d' < "$session_file" | wc -w | \
 				 awk '{print $1}')
 	session_data["pace_position"]=0

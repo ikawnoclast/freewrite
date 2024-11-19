@@ -42,7 +42,7 @@ for your input as well. If it's useful to you, please let me know.
 This is the basic requirement:
 
 * GNU Bash shell (tested with 3.2.X [Mac OS X default] and 5.2.X [from
-  Homebrew/Fink/MacPorts])
+  Homebrew/Fink/MacPorts] and on various 5.2.X versions on Linux distributions)
 
 freewrite uses external functions to implement whatever your heart's desire may
 be. You can use other utilities however you would like. That said, the included
@@ -52,8 +52,8 @@ functions use the following optional utilities:
   convert a string into audible speech. The `during_wait_and_say`
   function uses that capability.
 
-* [Dropbox](http://dropbox.com/) or [Google Drive](http://drive.google.com/), 
-  cloud-based storage services used to store free write session files. 
+* [Dropbox](http://dropbox.com/), [Google Drive](http://drive.google.com/), 
+  other cloud-based storage services, or [Syncthing](https://syncthing.net/) folders used to store freewrite session files. 
   freewrite can use a cloud storage directory to archive the free write session
   files. **You can specify any directory you want though.**
 
@@ -117,7 +117,7 @@ Go to my [profile page](http://ikawnoclast.com) for contact details.
 
 ## License ##
 
-Copyright (c) 2012-2022 Keith A. Watson
+Copyright (c) 2012-2024 Keith A. Watson
 
 MIT License
 

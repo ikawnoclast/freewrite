@@ -1,4 +1,4 @@
-#!/opt/homebrew/bin/bash
+#!/usr/bin/bash
 
 #
 # freewrite
@@ -7,6 +7,9 @@
 #
 
 umask 022
+
+# create a safe temporary file time data output
+tmp_file=$(mktemp)
 
 # create an associative array in which to store session_data
 declare -A session_data
@@ -54,6 +57,8 @@ _execute_function_list () {
 	local ext_function_list="$1"
 
 	for ext_function in $ext_function_list; do
+		[ $_debug_mode == "yes" ] && \
+			echo "DEBUG: Executing function $ext_function"
 		$ext_function
 		if [ $? -ne 0 ]; then
 			echo "$0: $ext_function returned an error. Exiting."
@@ -68,7 +73,9 @@ _load_external_functions () {
 	
 	for function_type in $function_types; do
 		for ext_function_file in $_script_dir/${function_type}_* ; do
-			[ -r "$ext_function_file" ] && source "$ext_function_file"
+				[ $_debug_mode == "yes" ] && \
+					echo "DEBUG: Loading $ext_function_file"
+ 			[ -r "$ext_function_file" ] && source "$ext_function_file"
 		done
 	done
 }
@@ -80,7 +87,7 @@ _terminate_bg_jobs () {
 }
 
 # kill any background jobs exiting on various signals
-trap "_terminate_bg_jobs" EXIT QUIT HUP INT
+trap "_terminate_bg_jobs && rm -f $tmp_file" EXIT QUIT HUP INT
 
 # load all external functions from their respective files
 _load_external_functions
@@ -90,14 +97,22 @@ _load_external_functions
 _execute_function_list "$before_function_list"
 _execute_function_list "$during_function_list"
 
-# save the state of specific options into the data file
-echo -e "debug_mode: $_debug_mode\nsafe_mode: $_safe_mode" >> "$data_file"
+# save the state of specific options into session data
+session_data["debug_mode"]=$_debug_mode
+session_data["safe_mode"]=$_safe_mode
 
-# find the lines in the session file to put the user in the "right" spot to edit
+# find the lines in the session file to put the user in the "right" spot to 
+#  edit
 jump_to=$(wc -l "$session_file" | awk '{print $1}')
 
-# open an editor with a template and dated filename
-/usr/bin/time $editor +$jump_to $editor_opts "$session_file"
+# specify the bash time format string to capture the time spent writing
+TIMEFORMAT="%0lR"
+
+# open an editor with a template and dated filename (and append the time
+#  spent in the editor to the temporary file)
+{ time $editor +$jump_to $editor_opts "$session_file" ; } 2>> "$tmp_file"
+# capture the time data from the temporary file into the session data array
+session_data["writing_time"]=$(head -1 $tmp_file)
 
 # run functions after the free write session
 _execute_function_list "$after_function_list"
