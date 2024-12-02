@@ -52,39 +52,8 @@ while getopts ":hsd" opt; do
   	esac
 done
 
-_execute_function_list () {
-	[ $_safe_mode == "yes" ] && return
-	local ext_function_list="$1"
-
-	for ext_function in $ext_function_list; do
-		[ $_debug_mode == "yes" ] && \
-			echo "DEBUG: Executing function $ext_function"
-		$ext_function
-		if [ $? -ne 0 ]; then
-			echo "$0: $ext_function returned an error. Exiting."
-			exit 1
-		fi
-	done
-}
-
-_load_external_functions () {
-	[ $_safe_mode == "yes" ] && return
-	local function_types="before during after"
-	
-	for function_type in $function_types; do
-		for ext_function_file in $_script_dir/${function_type}_* ; do
-				[ $_debug_mode == "yes" ] && \
-					echo "DEBUG: Loading $ext_function_file"
- 			[ -r "$ext_function_file" ] && source "$ext_function_file"
-		done
-	done
-}
-
-_terminate_bg_jobs () {
-	for job in $(jobs -p); do 
-		kill $job 2> /dev/null
-	done
-}
+# load internal freewrite functions
+source "$_script_dir/internal_functions"
 
 # kill any background jobs exiting on various signals
 trap "_terminate_bg_jobs && rm -f $tmp_file" EXIT QUIT HUP INT

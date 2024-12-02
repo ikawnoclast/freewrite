@@ -8,17 +8,19 @@ PROJECTNAME=	freewrite
 
 MAINSCRIPT=	freewrite
 AUXFILES=	README.md freewriterc.sample
-FUNCTIONS=	after_append_timestamp		\
-		after_collect_stats		\
-		after_find_todos 		\
+FUNCTIONS=	\
+		internal_functions			\
+		after_append_timestamp		\
+		after_collect_stats			\
+		after_find_todos 			\
 		after_print_final_message	\
-		after_print_stats		\
-		after_tweet_results		\
+		after_print_stats			\
+		after_tweet_results			\
 		before_check_directories	\
 		before_check_if_file_exists	\
 		before_create_session_file	\
-		before_get_weather		\
-		before_query_mood		\
+		before_get_weather			\
+		before_query_mood			\
 		during_wait_and_say
 
 CONFIGFILE=	freewriterc.sample
