@@ -6,6 +6,38 @@
 #
 
 after_print_stats () {
-	echo "You wrote ${session_data["word_count"]} words in ${session_data["writing_time"]}. Your defined pace is $writing_pace words in $writing_time minutes."
-	echo "This session is ${session_data["pace_status"]}."
+	local defined_pace=$(( expected_word_count / writing_time ))
+	local minutes=${session_data["writing_time"]%m*}
+	local seconds_string=${session_data["writing_time"]##*m}
+	local seconds=${seconds_string%s}
+	local actual_pace actual_pace_color actual_word_color output
+
+	# simple rounding
+	[[ $seconds -ge 30 ]] && ((minutes++))
+
+	# prevent division by zero error
+	if [[ $minutes -gt 0 ]]; then
+		actual_pace=$(( session_data["word_count"] / minutes ))
+	else
+		actual_pace=0
+	fi
+
+	# define color of output based on current writing pace (above or 
+	#  below expected pace)
+	if [[ $actual_pace -ge $defined_pace ]]; then
+		actual_word_color=$Green
+		actual_pace_color=$UGreen
+	else
+		actual_word_color=$Red
+		actual_pace_color=$URed
+	fi
+
+	# Broke the string up to simplify editing and debugging
+	output="\nYour defined pace is $Blue$expected_word_count words$NC in $Blue$writing_time minutes$NC, "
+	output+="which is $UBlue$defined_pace words per minute$NC.\n"
+	output+="You wrote $actual_word_color${session_data["word_count"]} words$NC "
+	output+="($actual_word_color${session_data["pace_status"]}$NC) "
+	output+="in $actual_word_color$minutes minutes and $seconds seconds$NC, "
+	output+="which is approximately $actual_pace_color$actual_pace words per minute$NC."
+	echo -e $output
 }

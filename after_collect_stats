@@ -15,12 +15,12 @@ after_collect_stats () {
 	echo "$(date +%d),"${session_data["word_count"]} >> "$stats_file"
 	
 	# determine pace position (on, under, over)
-	session_data["pace_position"]=$(( writing_pace - ${session_data["word_count"]} ))
+	session_data["pace_position"]=$(( expected_word_count - ${session_data["word_count"]} ))
 	if [ ${session_data["pace_position"]} -eq 0 ]; then
-		session_data["pace_status"]="keeping pace"
+		session_data["pace_status"]="on target"
 	elif [ ${session_data["pace_position"]} -gt 0 ]; then
-		session_data["pace_status"]="${session_data["pace_position"]} words under pace"
+		session_data["pace_status"]="${session_data["pace_position"]} words under target"
 	else
-		session_data["pace_status"]="$(( -${session_data["pace_position"]} )) words over pace"
+		session_data["pace_status"]="$(( -${session_data["pace_position"]} )) words over target"
 	fi
 }
