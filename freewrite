@@ -61,6 +61,9 @@ trap "_terminate_bg_jobs && rm -f $tmp_file" EXIT QUIT HUP INT
 # load all external functions from their respective files
 _load_external_functions
 
+# set color variables needed for colorful output
+_set_color_codes
+
 # execute the functions for operations to be conducted before and during the
 #  free write session
 _execute_function_list "$before_function_list"
