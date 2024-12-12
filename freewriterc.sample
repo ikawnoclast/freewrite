@@ -65,6 +65,9 @@ after_tweet_results_twitter_cmd="echo"		# just print the post message generated
 # file_prefix - directory and file name specifications under $top_level_dir
 file_prefix=$(date '+%Y/%m/%d')
 
+# final_messages_file - file containing quotations to display at the end of the session
+final_messages_file=final_messages.txt
+
 # session_file - the free write session file
 session_file="$top_level_dir/$file_prefix.txt"
 
