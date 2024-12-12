@@ -2,10 +2,20 @@
 # after_print_final_message 
 #
 #	A freewrite after function to print an encouraging message at the
-#	conclusion of the freewrite sessions.
+#	conclusion of the freewrite sessions. A quote is randomly selected
+#	from an internal file of quotations.
 #
 
 after_print_final_message () {
-	echo "Thanks for another awesome free writing session!"
-}
+	local messages_file="$_script_dir/$final_messages_file"
+	local line_count
+	local random_line
+	local message="Thanks for another awesome free writing session!"
 
+	if [ -f $messages_file ]; then
+		line_count=$(grep -v "^#" $messages_file | wc -l)
+		random_line=$(( $RANDOM % $line_count ))
+		message=$(grep -v "^#" $messages_file | head -n +$random_line | tail -n 1)
+	fi
+	echo -e "\n$message"
+}

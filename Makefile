@@ -7,7 +7,7 @@
 PROJECTNAME=	freewrite
 
 MAINSCRIPT=	freewrite
-AUXFILES=	README.md freewriterc.sample
+AUXFILES=	README.md freewriterc.sample final_messages.txt
 FUNCTIONS=	\
 		internal_functions			\
 		after_append_timestamp		\
