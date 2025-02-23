@@ -9,4 +9,5 @@ before_create_session_file () {
 	sed -e "s/%%DATE_FIELD%%/$txt_date/" < "$template_file" > "$session_file"
 	session_data["date"]=$(date +%Y%m%d)
 	session_data["session_begin"]=$(date +%H:%M:%S)
+	session_data["session_file"]=$session_file
 }

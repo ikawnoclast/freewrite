@@ -9,11 +9,11 @@ after_find_todos () {
 	local todo_list=$(mktemp /tmp/todos.XXXXXXXX)
 
 	grep "^TODO:" "$session_file" > $todo_list
-	if [ -s $todo_list ]; then
-		echo "The following to-dos were extracted from the text:"
+	if [[ -s $todo_list ]]; then
+		echo "${Green}$0${NC}: The following to-do items were extracted from the text:"
 		cat $todo_list
 	fi
-	if [ -s $todo_list ]; then
+	if [[ -s $todo_list ]]; then
 		session_data["todo_count"]=$(wc -l $todo_list | awk '{print $1}')
 # KAW: The following needs a new approach
 		session_data["todo_list"]=$(cat $todo_list)

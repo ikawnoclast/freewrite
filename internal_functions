@@ -5,28 +5,28 @@
 #
 
 _execute_function_list () {
-	[ $_safe_mode == "yes" ] && return
+	[[ $_safe_mode ]] && return
 	local ext_function_list="$1"
 
 	for ext_function in $ext_function_list; do
-		[ $_debug_mode == "yes" ] && \
-			echo "DEBUG: Executing function $ext_function"
+		[[ $_debug_mode ]] && \
+			echo -e "${Cyan}DEBUG${NC}: Executing function $ext_function"
 		$ext_function
-		if [ $? -ne 0 ]; then
-			echo "$0: $ext_function returned an error. Exiting."
+		if [[ $? -ne 0 ]]; then
+			echo -e "${Red}$0${NC}: $ext_function returned an error. Exiting."
 			exit 1
 		fi
 	done
 }
 
 _load_external_functions () {
-	[ $_safe_mode == "yes" ] && return
+	[[ $_safe_mode ]] && return
 	local function_types="before during after"
 	
 	for function_type in $function_types; do
 		for ext_function_file in $_script_dir/${function_type}_* ; do
-				[ $_debug_mode == "yes" ] && \
-					echo "DEBUG: Loading $ext_function_file"
+				[[ $_debug_mode ]] && \
+					echo -e "${Cyan}DEBUG${NC}: Loading $ext_function_file"
  			[ -r "$ext_function_file" ] && source "$ext_function_file"
 		done
 	done
@@ -38,28 +38,71 @@ _terminate_bg_jobs () {
 	done
 }
 
+#
+# _set_color_code -- Internal function for managing color codes to change the
+#  color of text displayed. Color codes assume the terminal or terminal 
+#  emulator can display the colors. This function checks for known terminals
+#  that provide color text support, which are almost exclusively modern
+#  terminal emulators. If a terminal or terminal emulator does not support
+#  colors, the color code variables will be empty strings, which will allow
+#  the echo commands in this tool to display the text strings normally and
+#  without color changes.
+#
+#  Other color codes are possible. The set used in this function are a subset
+#  of those possible color codes. Some of the included color codes are not 
+#  used in this tool, but are provided for potential future use.
+#
 _set_color_codes () {
-	# Reset
-	Color_Off='\033[0m'	# Text Reset
-	NC=$Color_Off		# alias for reset
+	# determine terminal type
+	case $TERM in
+		*color) # terminals/terminal emulators with color support
+			# Reset
+			Color_Off='\033[0m'	# Text Reset
+			NC=$Color_Off		# alias for reset, aka "no color"
 
-	# Regular Colors
-	Black='\033[0;30m'	# Black
-	Red='\033[0;31m'	# Red
-	Green='\033[0;32m'	# Green
-	Yellow='\033[0;33m'	# Yellow
-	Blue='\033[0;34m'	# Blue
-	Purple='\033[0;35m'	# Purple
-	Cyan='\033[0;36m'	# Cyan
-	White='\033[0;37m'	# White
+			# Regular Colors
+			Black='\033[0;30m'	# Black
+			Red='\033[0;31m'	# Red
+			Green='\033[0;32m'	# Green
+			Yellow='\033[0;33m'	# Yellow
+			Blue='\033[0;34m'	# Blue
+			Purple='\033[0;35m'	# Purple
+			Cyan='\033[0;36m'	# Cyan
+			White='\033[0;37m'	# White
+		
+			# Underline
+			UBlack='\033[4;30m'	# Black
+			URed='\033[4;31m'	# Red
+			UGreen='\033[4;32m'	# Green
+			UYellow='\033[4;33m'	# Yellow
+			UBlue='\033[4;34m'	# Blue
+			UPurple='\033[4;35m'	# Purple
+			UCyan='\033[4;36m'	# Cyan
+			UWhite='\033[4;37m'	# White
+			;;
+		*) # no color support
+			# Reset
+			Color_Off=''	# Text Reset
+			NC=$Color_Off	# alias for reset, aka "no color"
 
-	# Underline
-	UBlack='\033[4;30m'	# Black
-	URed='\033[4;31m'	# Red
-	UGreen='\033[4;32m'	# Green
-	UYellow='\033[4;33m'	# Yellow
-	UBlue='\033[4;34m'	# Blue
-	UPurple='\033[4;35m'	# Purple
-	UCyan='\033[4;36m'	# Cyan
-	UWhite='\033[4;37m'	# White
+			# Regular Colors
+			Black=''	# Black
+			Red=''		# Red
+			Green=''	# Green
+			Yellow=''	# Yellow
+			Blue=''		# Blue
+			Purple=''	# Purple
+			Cyan=''		# Cyan
+			White=''	# White
+		
+			# Underline
+			UBlack=''	# Black
+			URed=''		# Red
+			UGreen=''	# Green
+			UYellow=''	# Yellow
+			UBlue=''	# Blue
+			UPurple=''	# Purple
+			UCyan=''	# Cyan
+			;;
+	esac
 }

@@ -82,6 +82,7 @@ stats_file="$top_level_dir/$(date '+%Y/%m')/stats.csv"
 before_function_list="before_check_directories		\
 		      before_check_if_file_exists	\
 		      before_create_session_file	\
+		      before_print_first_message	\
 		      before_query_mood			\
 		      before_get_weather"
 
