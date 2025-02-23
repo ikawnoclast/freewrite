@@ -8,12 +8,18 @@
 #
 
 before_query_mood () {
+	echo -e "\tConsider and rate your current ${UYellow}mood${NC} on a scale from 0 to 9.\n" 
+	echo -e "\t\t(${URed}Bad${NC}) ${Red}0${NC} <---------- ${Purple}5${NC} ----------> ${Blue}9${NC} (${UBlue}Good${NC})\n"
 
-	echo -e "Welcome to freewrite, the simple tool for free writing!\n"
-	echo -e "\tRate your current mood on a scale from 0 to 9." 
-	echo -e "\t(Bad) 0 <---------- 5 ----------> 9 (Good)\n"
-	echo -n "What is your current mood (0-9)? "
+	until [[ ${session_data[mood]} =~ [0-9] ]]; do
+		echo -en "What is your current mood (${URed}0${NC}-${UBlue}9${NC})? ${UYellow}"
+		read -n 1 session_data[mood]
+		echo -e "$NC"
+	done
 
-	read -n 1 session_data["mood"]
-	echo
+	[[ $_debug_mode ]] && \
+		echo -e "${Cyan}DEBUG${NC}: Final Current Mood read is ${session_data[mood]}"
+
+	return 0 # 0 is needed to adjust the function return from the
+		 #  previous test (which is 1 when not debugging)
 }

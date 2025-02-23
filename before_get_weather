@@ -16,11 +16,13 @@ before_get_weather () {
 				sed -e 's/<\([a-zA-Z0-9]\+>\)/\n&/g' | \
 				grep '<title>' | tail -1 | \
 				sed -e 's/^<title>\(.*\) at .*/\1/')
-		[[ $_debug_mode == "yes" ]] && echo "DEBUG -- Weather report: $weather_report"
+		[[ $_debug_mode ]] && \
+			echo -e "${Cyan}DEBUG${NC}: Raw weather report data: $(cat $weather_data)"
 	else
 		weather_report="No data available."
 	fi
 	session_data["weather"]=$weather_report
-	[[ $_debug_mode == "yes" ]] && echo "DEBUG -- Weather data captured: " ${session_data["weather"]}
+	[[ $_debug_mode ]] && \
+		echo -e "${Cyan}DEBUG${NC}: Weather data captured:" ${session_data["weather"]}
 	rm -f $weather_data
 }

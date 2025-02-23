@@ -6,16 +6,18 @@
 #
 
 before_check_directories () {
-	local base_dir=$(dirname "$session_file")
+	local base_dir="${session_file%/*}/"
 	local status=0
 	
-	if [ ! -d "$top_level_dir" ]; then
-		echo "$0: The free write directory \"$top_level_dir\" is missing."
+	if [[ ! -d "$top_level_dir" ]]; then
+		echo -e "${Red}$0${NC}: The free write directory \"$top_level_dir\" is ${Red}missing${NC}."
 		status=1
 	fi
 	
-	if [ $status -eq 0 -a ! -d "$base_dir" ]; then
+	if [[ $status == 0 && ! -d "$base_dir" ]]; then
+		[[ $_debug_mode ]] && echo -e "${Cyan}DEBUG${NC}: Creating base dir: $base_dir"
 		mkdir -p "$base_dir"
 	fi
+
 	return $status
 }

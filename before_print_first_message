@@ -1,0 +1,9 @@
+#
+# before_print_first_message
+#	
+#	A freewrite before function to print a welcome message.
+#
+
+before_print_first_message () {
+	echo -e "Welcome to ${Green}freewrite${NC}, the simple tool for ${Cyan}free writing${NC}!\n"
+}

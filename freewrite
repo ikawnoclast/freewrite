@@ -29,8 +29,6 @@ while [ -h "$_source" ] ; do _source="$(readlink "$_source")"; done
 _script_dir="$( cd -P "$( dirname "$_source" )" && pwd )"
 
 # parse command line arguments and set modes of operation
-_safe_mode="no"
-_debug_mode="no"
 while getopts ":hsd" opt; do
 	case $opt in
 		h)
@@ -58,11 +56,11 @@ source "$_script_dir/internal_functions"
 # kill any background jobs exiting on various signals
 trap "_terminate_bg_jobs && rm -f $tmp_file" EXIT QUIT HUP INT
 
-# load all external functions from their respective files
-_load_external_functions
-
 # set color variables needed for colorful output
 _set_color_codes
+
+# load all external functions from their respective files
+_load_external_functions
 
 # execute the functions for operations to be conducted before and during the
 #  free write session
@@ -70,8 +68,8 @@ _execute_function_list "$before_function_list"
 _execute_function_list "$during_function_list"
 
 # save the state of specific options into session data
-session_data["debug_mode"]=$_debug_mode
-session_data["safe_mode"]=$_safe_mode
+session_data["debug_mode"]=${_debug_mode:-"no"}
+session_data["safe_mode"]=${_safe_mode:-"no"}
 
 # find the lines in the session file to put the user in the "right" spot to 
 #  edit
@@ -84,7 +82,10 @@ TIMEFORMAT="%0lR"
 #  spent in the editor to the temporary file)
 { time $editor +$jump_to $editor_opts "$session_file" ; } 2>> "$tmp_file"
 # capture the time data from the temporary file into the session data array
-session_data["writing_time"]=$(head -1 $tmp_file)
+#session_data["writing_time"]=$(head -1 $tmp_file)
+# capture the time date from the temporary file into the session data array
+#  avoid other errors that may be present in the file
+session_data["writing_time"]=$(grep -E '^[0-9]*m[0-9]*s$' $tmp_file)
 
 # run functions after the free write session
 _execute_function_list "$after_function_list"
