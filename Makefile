@@ -1,7 +1,7 @@
 #
 # Makefile for the freewrite project.
 #
-# Copyright (c) 2012-2024 Keith A. Watson
+# Copyright (c) 2012-2025 Keith A. Watson
 #
 
 PROJECTNAME=	freewrite
@@ -29,18 +29,25 @@ CONFIGLOCATION=	$(HOME)/.freewriterc
 
 ALLFILES=	$(MAINSCRIPT) $(FUNCTIONS) $(AUXFILES)
 
-# Where should the files go? (select one)
-# Typical Mac OS X install location for a single user
-#INSTALLDIR=$(HOME)/Library/$(PROJECTNAME)
-
-# Typical UNIX install locations for a single user
-#INSTALLDIR=$(HOME)/.$(PROJECTNAME)
-INSTALLDIR=$(HOME)/lib/$(PROJECTNAME)
+# detect operating systems to determine where to place files
+OS:=$(shell uname -s)
+ifeq ($(strip $(OS)),Darwin)
+	# Typical Mac OS X install location for a single user
+	INSTALLDIR=$(HOME)/Library/$(PROJECTNAME)
+else
+	# Typical Linux install locations for a single user
+	INSTALLDIR=$(HOME)/lib/$(PROJECTNAME)
+endif
 
 # Typical path for installation of main script
 BINDIR=$(HOME)/bin
 
-install: check
+directory-select: check
+	@echo "OS detected:" $(OS)
+	@echo "Installing script files into:" $(INSTALLDIR)
+	@echo "Creating executable link into:" $(BINDIR)
+
+install: directory-select
 	rm -rf $(INSTALLDIR).old
 	rm -f $(BINDIR)/$(MAINSCRIPT)
 	-mv $(INSTALLDIR) $(INSTALLDIR).old
