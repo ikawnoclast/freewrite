@@ -11,7 +11,7 @@ before_check_if_file_exists () {
 	local status=0
 	
 	if [ -f "$session_file" ]; then
-		echo "$0: Free writing file \"$session_file\" exists."
+		echo -e "${Red}$0${NC}: Free writing file \"$session_file\" exists."
 		status=1
 	fi
 	

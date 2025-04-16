@@ -17,5 +17,5 @@ after_print_final_message () {
 		random_line=$(( $RANDOM % $line_count ))
 		message=$(grep -v "^#" $messages_file | head -n +$random_line | tail -n 1)
 	fi
-	echo -e "\n$message"
+	echo -e "\n$message" | fmt
 }
